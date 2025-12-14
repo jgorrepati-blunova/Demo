@@ -27,7 +27,7 @@ resource "local_file" "private_key" {
 }
 
 resource "aws_instance" "public_instance" {
-  ami           = "ami-0fa91bc90632c73c9"
+  ami           = "ami-0ecb62995f68bb549"
   instance_type = "t3.micro"
   key_name = aws_key_pair.key_pair.key_name
 
