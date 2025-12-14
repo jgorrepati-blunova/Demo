@@ -16,30 +16,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ CHECKOUT CODE (MANDATORY)
-      - name: Checkout repository
+      # 1️⃣ Checkout code (MANDATORY)
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      # 2️⃣ SETUP TERRAFORM
+      # 2️⃣ Setup Terraform
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
           terraform_version: 1.6.6
 
-      # 3️⃣ AWS AUTH (OIDC)
+      # 3️⃣ AWS Auth (OIDC)
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
-      # 4️⃣ VERIFY CONTEXT
-      - name: Debug
-        run: |
-          aws sts get-caller-identity
-          ls -la
+      # 4️⃣ Sanity check
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
 
-      # 5️⃣ TERRAFORM
+      # 5️⃣ Terraform
       - name: Terraform Init
         run: terraform init
 
