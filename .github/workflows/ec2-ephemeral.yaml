@@ -33,7 +33,8 @@ jobs:
         run: terraform apply -auto-approve
 
       - name: Wait before destroy
-        run: sleep 90  
+        run: sleep 90   
 
       - name: Terraform Destroy (cleanup)
+        if: always()
         run: terraform destroy -auto-approve

@@ -22,7 +22,7 @@ resource "aws_instance" "ephemeral_ec2" {
   key_name      = var.key_name
 
   tags = {
-    Name = "ephemeral-ec2"
+    Name  = "ephemeral-ec2"
     Owner = "github-actions"
   }
 }
