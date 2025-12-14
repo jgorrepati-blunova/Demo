@@ -1,4 +1,4 @@
-name: Terraform Destroy
+name: Terraform EC2 Ephemeral
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 jobs:
-  destroy:
+  terraform:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,7 +20,7 @@ jobs:
         with:
           terraform_version: 1.6.6
 
-      - name: Configure AWS credentials
+      - name: Configure AWS credentials (OIDC)
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -29,5 +29,11 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var="key_name=github-actions-key"
+      - name: Terraform Apply (create EC2)
+        run: terraform apply -auto-approve
+
+      - name: Wait before destroy
+        run: sleep 90  
+
+      - name: Terraform Destroy (cleanup)
+        run: terraform destroy -auto-approve
